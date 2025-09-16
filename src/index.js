@@ -1,33 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import User from './components/User/User';
-import Admin from './components/Admin/Admin';
-import Homepage from './components/home/Homepage';
-import ManageUser from './components/Admin/content/ManageUser';
-import DashBoard from './components/Admin/content/DashBoard';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import User from "./components/User/User";
+import Admin from "./components/Admin/Admin";
+import Homepage from "./components/home/Homepage";
+import ManageUser from "./components/Admin/content/ManageUser";
+import DashBoard from "./components/Admin/content/DashBoard";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     {/* <React.StrictMode> */}
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App></App>}>
-        <Route index element={<Homepage></Homepage>}></Route>
-        <Route path='users' element={<User></User>}></Route>
+        <Route path="/" element={<App></App>}>
+          <Route index element={<Homepage></Homepage>}></Route>
+          <Route path="users" element={<User></User>}></Route>
         </Route>
-        <Route path='/admin' element={<Admin></Admin>}>
+        <Route path="/admin" element={<Admin></Admin>}>
           <Route index element={<DashBoard></DashBoard>}></Route>
-          <Route path='manage-users' element={<ManageUser></ManageUser>}></Route>
+          <Route
+            path="manage-users"
+            element={<ManageUser></ManageUser>}
+          ></Route>
         </Route>
       </Routes>
-      
     </BrowserRouter>
     {/* </React.StrictMode> */}
   </Provider>

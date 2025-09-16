@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
-import { postCreateUser } from "../../../services/apiService";
-const ModelCreateUser = (props) => {
-  const { show, setShow } = props;
+import { postUpdateUser } from "../../../services/apiService";
+import _ from "lodash"
+const ModelUpdateUser = (props) => {
+  const { show, setShow, dataUpdate} = props;
   const handleClose = () => {
     setShow(false);
     setEmail("");
@@ -14,7 +15,19 @@ const ModelCreateUser = (props) => {
     setRole("USER");
     setImage("");
     setPreviewimage("");
+    props.resetUpdateData("");
   };
+  useEffect(() => {
+    if (!_.isEmpty(dataUpdate)) {
+      setEmail(dataUpdate.email);
+      setUsername(dataUpdate.username);
+      setRole(dataUpdate.role);
+      setImage("");
+      if (dataUpdate.image) {
+        setPreviewimage(`data:image/jpeg;base64,${dataUpdate.image}`);
+      }
+    }
+  }, [dataUpdate])
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -42,12 +55,8 @@ const ModelCreateUser = (props) => {
       toast.error("Invalid Email!");
       return;
     }
-    if (!password) {
-      toast.error("Invalid Password!");
-      return;
-    }
 
-    let data = await postCreateUser(email, password, username, role, image);
+    let data = await postUpdateUser(dataUpdate.id, username, role, image);
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
@@ -68,7 +77,7 @@ const ModelCreateUser = (props) => {
         className="modal-add-user"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add New User</Modal.Title>
+          <Modal.Title>Update A User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -78,6 +87,7 @@ const ModelCreateUser = (props) => {
                 type="email"
                 className="form-control"
                 value={email}
+                disabled
                 onChange={(event) => setEmail(event.target.value)}
               />
             </div>
@@ -87,6 +97,7 @@ const ModelCreateUser = (props) => {
                 type="password"
                 className="form-control"
                 value={password}
+                disabled
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
@@ -145,4 +156,4 @@ const ModelCreateUser = (props) => {
   );
 };
 
-export default ModelCreateUser;
+export default ModelUpdateUser;
